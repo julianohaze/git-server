@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+ gogs:
+  image: gogs/gogs
+  container_name: 'gogs'
+  ports:
+    - "22:22" 
+  volumes:
+    - /Users/julianosilva/docker-volumes/gogs/:/data
+  links:
+    - gogs-db
+ 
+ gogs-db:
+  image: gogs-db
+  container_name: 'gogs-db'
+  environment:
+    - MYSQL_ROOT_PASSWORD=root
+  expose:
+    - "3306"
+  ports:
+    - "3306:3306" 
+  volumes:
+    - /Users/julianosilva/docker-volumes/var/lib/mysql/gogs:/var/lib/mysql
+
+ gogs-nginx:
+  image: gogs-nginx
+  container_name: 'gogs-nginx'
+  expose:
+    - "80"
+  ports:
+    - "80:80" 
+  links:
+    - gogs
